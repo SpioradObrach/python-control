@@ -75,7 +75,7 @@ class TestStateSpace(unittest.TestCase):
         self.assertEqual(sys.C.shape, (1, 2))
         self.assertEqual(sys.D.shape, (1, 1))
         for X in [sys.A, sys.B, sys.C, sys.D]:
-            self.assertTrue(isinstance(X, np.matrix))
+            self.assertTrue(isinstance(X, np.array))
 
     def test_pole(self):
         """Evaluate the poles of a MIMO system."""

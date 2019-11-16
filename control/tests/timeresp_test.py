@@ -19,10 +19,10 @@ from control.exception import slycot_check
 class TestTimeresp(unittest.TestCase):
     def setUp(self):
         """Set up some systems for testing out MATLAB functions"""
-        A = np.matrix("1. -2.; 3. -4.")
-        B = np.matrix("5.; 7.")
-        C = np.matrix("6. 8.")
-        D = np.matrix("9.")
+        A = np.array("1. -2.; 3. -4.")
+        B = np.array("5.; 7.")
+        C = np.array("6. 8.")
+        D = np.array("9.")
         self.siso_ss1 = StateSpace(A, B, C, D)
 
         # Create some transfer functions
@@ -30,17 +30,17 @@ class TestTimeresp(unittest.TestCase):
         self.siso_tf2 = _convert_to_transfer_function(self.siso_ss1)
 
         # Create MIMO system, contains ``siso_ss1`` twice
-        A = np.matrix("1. -2. 0.  0.;"
+        A = np.array("1. -2. 0.  0.;"
                       "3. -4. 0.  0.;"
                       "0.  0. 1. -2.;"
                       "0.  0. 3. -4. ")
-        B = np.matrix("5. 0.;"
+        B = np.array("5. 0.;"
                       "7. 0.;"
                       "0. 5.;"
                       "0. 7. ")
-        C = np.matrix("6. 8. 0. 0.;"
+        C = np.array("6. 8. 0. 0.;"
                       "0. 0. 6. 8. ")
-        D = np.matrix("9. 0.;"
+        D = np.array("9. 0.;"
                       "0. 9. ")
         self.mimo_ss1 = StateSpace(A, B, C, D)
 
@@ -208,7 +208,7 @@ class TestTimeresp(unittest.TestCase):
 
         # Test MIMO system, which contains ``siso_ss1`` twice
         sys = self.mimo_ss1
-        x0 = np.matrix(".5; 1.; .5; 1.")
+        x0 = np.array(".5; 1.; .5; 1.")
         _t, y_00 = initial_response(sys, T=t, X0=x0, input=0, output=0)
         _t, y_11 = initial_response(sys, T=t, X0=x0, input=1, output=1)
         np.testing.assert_array_almost_equal(y_00, youttrue, decimal=4)
@@ -217,7 +217,7 @@ class TestTimeresp(unittest.TestCase):
     def test_initial_response_no_trim(self):
         # test MIMO system without trimming
         t = np.linspace(0, 1, 10)
-        x0 = np.matrix(".5; 1.; .5; 1.")
+        x0 = np.array(".5; 1.; .5; 1.")
         youttrue = np.array([11., 8.1494, 5.9361, 4.2258, 2.9118, 1.9092,
                              1.1508, 0.5833, 0.1645, -0.1391])
         sys = self.mimo_ss1
@@ -242,7 +242,7 @@ class TestTimeresp(unittest.TestCase):
 
         # test with initial value and special algorithm for ``U=0``
         u = 0
-        x0 = np.matrix(".5; 1.")
+        x0 = np.array(".5; 1.")
         youttrue = np.array([11., 8.1494, 5.9361, 4.2258, 2.9118, 1.9092,
                              1.1508, 0.5833, 0.1645, -0.1391])
         _t, yout, _xout = forced_response(self.siso_ss1, t, u, x0)
@@ -476,7 +476,7 @@ class TestTimeresp(unittest.TestCase):
         # SISO continuous time
         t, y = step_response(self.siso_ss1)
         self.assertTrue(isinstance(t, np.ndarray)
-                        and not isinstance(t, np.matrix))
+                        and not isinstance(t, np.array))
         self.assertTrue(len(t.shape) == 1)
         self.assertTrue(len(y.shape) == 1) # SISO returns "scalar" output
         self.assertTrue(len(t) == len(y))  # Allows direct plotting of output
@@ -484,7 +484,7 @@ class TestTimeresp(unittest.TestCase):
         # SISO discrete time
         t, y = step_response(self.siso_dss1)
         self.assertTrue(isinstance(t, np.ndarray)
-                        and not isinstance(t, np.matrix))
+                        and not isinstance(t, np.array))
         self.assertTrue(len(t.shape) == 1)
         self.assertTrue(len(y.shape) == 1) # SISO returns "scalar" output
         self.assertTrue(len(t) == len(y))  # Allows direct plotting of output
@@ -494,7 +494,7 @@ class TestTimeresp(unittest.TestCase):
         uin = [np.sin(tin), np.cos(tin)]
         t, y, x = forced_response(self.mimo_ss1, tin, uin)
         self.assertTrue(isinstance(t, np.ndarray)
-                        and not isinstance(t, np.matrix))
+                        and not isinstance(t, np.array))
         self.assertTrue(len(t.shape) == 1)
         self.assertTrue(len(y[0].shape) == 1)
         self.assertTrue(len(y[1].shape) == 1)
@@ -506,7 +506,7 @@ class TestTimeresp(unittest.TestCase):
         uin = [np.sin(tin), np.cos(tin)]
         t, y, x = forced_response(self.mimo_dss1, tin, uin)
         self.assertTrue(isinstance(t, np.ndarray)
-                        and not isinstance(t, np.matrix))
+                        and not isinstance(t, np.array))
         self.assertTrue(len(t.shape) == 1)
         self.assertTrue(len(y[0].shape) == 1)
         self.assertTrue(len(y[1].shape) == 1)
@@ -517,7 +517,7 @@ class TestTimeresp(unittest.TestCase):
         tin = np.array(np.linspace(0, 10, 100), ndmin=2)
         t, y = step_response(self.siso_ss1, tin)
         self.assertTrue(isinstance(t, np.ndarray)
-                        and not isinstance(t, np.matrix))
+                        and not isinstance(t, np.array))
         self.assertTrue(len(t.shape) == 1)
         self.assertTrue(len(y.shape) == 1) # SISO returns "scalar" output
         self.assertTrue(len(t) == len(y))  # Allows direct plotting of output

@@ -93,7 +93,7 @@ def _ssmatrix(data, axis=1):
     # Convert the data into an array or matrix, as configured
     # If data is passed as a string, use (deprecated?) matrix constructor
     if config.defaults['statesp.use_numpy_matrix'] or isinstance(data, str):
-        arr = np.matrix(data, dtype=float)
+        arr = np.array(data, dtype=float)
     else:
         arr = np.array(data, dtype=float)
     ndim = arr.ndim

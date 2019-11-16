@@ -399,8 +399,8 @@ class TestStateSpace(unittest.TestCase):
 
     def test_matrix_static_gain(self):
         """Regression: can we create matrix static gains?"""
-        d1 = np.matrix([[1, 2, 3], [4, 5, 6]])
-        d2 = np.matrix([[7, 8], [9, 10], [11, 12]])
+        d1 = np.array([[1, 2, 3], [4, 5, 6]])
+        d2 = np.array([[7, 8], [9, 10], [11, 12]])
         g1 = StateSpace([], [], [], d1)
 
         # _remove_useless_states was making A = [[0]]
@@ -459,11 +459,11 @@ class TestStateSpace(unittest.TestCase):
 
     def test_matrix_to_state_space(self):
         """_convertToStateSpace(matrix) gives ss([],[],[],D)"""
-        D = np.matrix([[1, 2, 3], [4, 5, 6]])
+        D = np.array([[1, 2, 3], [4, 5, 6]])
         g = _convertToStateSpace(D)
 
         def empty(shape):
-            m = np.matrix([])
+            m = np.array([])
             m.shape = shape
             return m
         np.testing.assert_array_equal(empty((0, 0)), g.A)

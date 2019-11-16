@@ -58,10 +58,10 @@ margin(siso_ss2)
 class TestMatlab(unittest.TestCase):
     def setUp(self):
         """Set up some systems for testing out MATLAB functions"""
-        A = np.matrix("1. -2.; 3. -4.")
-        B = np.matrix("5.; 7.")
-        C = np.matrix("6. 8.")
-        D = np.matrix("9.")
+        A = np.array("1. -2.; 3. -4.")
+        B = np.array("5.; 7.")
+        C = np.array("6. 8.")
+        D = np.array("9.")
         self.siso_ss1 = ss(A,B,C,D)
 
         # Create some transfer functions
@@ -75,17 +75,17 @@ class TestMatlab(unittest.TestCase):
         self.siso_tf4 = ss2tf(self.siso_ss2);
 
         #Create MIMO system, contains ``siso_ss1`` twice
-        A = np.matrix("1. -2. 0.  0.;"
+        A = np.array("1. -2. 0.  0.;"
                       "3. -4. 0.  0.;"
                       "0.  0. 1. -2.;"
                       "0.  0. 3. -4. ")
-        B = np.matrix("5. 0.;"
+        B = np.array("5. 0.;"
                       "7. 0.;"
                       "0. 5.;"
                       "0. 7. ")
-        C = np.matrix("6. 8. 0. 0.;"
+        C = np.array("6. 8. 0. 0.;"
                       "0. 0. 6. 8. ")
-        D = np.matrix("9. 0.;"
+        D = np.array("9. 0.;"
                       "0. 9. ")
         self.mimo_ss1 = ss(A, B, C, D)
 
@@ -220,7 +220,7 @@ class TestMatlab(unittest.TestCase):
         #Test SISO system
         sys = self.siso_ss1
         t = np.linspace(0, 1, 10)
-        x0 = np.matrix(".5; 1.")
+        x0 = np.array(".5; 1.")
         youttrue = np.array([11., 8.1494, 5.9361, 4.2258, 2.9118, 1.9092,
                              1.1508, 0.5833, 0.1645, -0.1391])
         yout, tout = initial(sys, T=t, X0=x0)
@@ -235,7 +235,7 @@ class TestMatlab(unittest.TestCase):
         if slycot_check():
             #Test MIMO system, which contains ``siso_ss1`` twice
             sys = self.mimo_ss1
-            x0 = np.matrix(".5; 1.; .5; 1.")
+            x0 = np.array(".5; 1.; .5; 1.")
             y_00, _t = initial(sys, T=t, X0=x0, input=0, output=0)
             y_11, _t = initial(sys, T=t, X0=x0, input=1, output=1)
             np.testing.assert_array_almost_equal(y_00, youttrue, decimal=4)
@@ -257,7 +257,7 @@ class TestMatlab(unittest.TestCase):
 
         #test with initial value and special algorithm for ``U=0``
         u=0
-        x0 = np.matrix(".5; 1.")
+        x0 = np.array(".5; 1.")
         youttrue = np.array([11., 8.1494, 5.9361, 4.2258, 2.9118, 1.9092,
                              1.1508, 0.5833, 0.1645, -0.1391])
         yout, _t, _xout = lsim(self.siso_ss1, u, t, x0)
@@ -268,7 +268,7 @@ class TestMatlab(unittest.TestCase):
             #first system: initial value, second system: step response
             u = np.array([[0., 1.], [0, 1], [0, 1], [0, 1], [0, 1],
                           [0, 1], [0, 1], [0, 1], [0, 1], [0, 1]])
-            x0 = np.matrix(".5; 1; 0; 0")
+            x0 = np.array(".5; 1; 0; 0")
             youttrue = np.array([[11., 9.], [8.1494, 17.6457],
                                  [5.9361, 24.7072], [4.2258, 30.4855],
                                  [2.9118, 35.2234], [1.9092, 39.1165],

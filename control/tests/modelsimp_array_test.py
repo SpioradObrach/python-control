@@ -29,14 +29,14 @@ class TestModelsimp(unittest.TestCase):
 
         # Make sure default type values are correct
         self.assertTrue(isinstance(hsv, np.ndarray))
-        self.assertFalse(isinstance(hsv, np.matrix))
+        self.assertFalse(isinstance(hsv, np.array))
 
         # Check that using numpy.matrix does *not* affect answer
         with warnings.catch_warnings(record=True) as w:
             control.use_numpy_matrix(True)
             self.assertTrue(issubclass(w[-1].category, UserWarning))
 
-            # Redefine the system (using np.matrix for storage)
+            # Redefine the system (using np.array for storage)
             sys = ss(A, B, C, D)
 
             # Compute the Hankel singular value decomposition
@@ -44,7 +44,7 @@ class TestModelsimp(unittest.TestCase):
 
             # Make sure that return type is correct
             self.assertTrue(isinstance(hsv, np.ndarray))
-            self.assertFalse(isinstance(hsv, np.matrix))
+            self.assertFalse(isinstance(hsv, np.array))
 
             # Go back to using the normal np.array representation
             control.use_numpy_matrix(False)

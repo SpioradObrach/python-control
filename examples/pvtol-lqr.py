@@ -35,7 +35,7 @@ ue = [0, m*g]  # (note these are lists, not matrices)
 # See below.
 
 # Dynamics matrix (use matrix type so that * works for multiplication)
-A = np.matrix(
+A = np.array(
     [[0, 0, 0, 1, 0, 0],
      [0, 0, 0, 0, 1, 0],
      [0, 0, 0, 0, 0, 1],
@@ -45,7 +45,7 @@ A = np.matrix(
 )
 
 # Input matrix
-B = np.matrix(
+B = np.array(
     [[0, 0], [0, 0], [0, 0],
      [np.cos(xe[2])/m, -np.sin(xe[2])/m],
      [np.sin(xe[2])/m, np.cos(xe[2])/m],
@@ -53,8 +53,8 @@ B = np.matrix(
 )
 
 # Output matrix 
-C = np.matrix([[1, 0, 0, 0, 0, 0], [0, 1, 0, 0, 0, 0]])
-D = np.matrix([[0, 0], [0, 0]])
+C = np.array([[1, 0, 0, 0, 0, 0], [0, 1, 0, 0, 0, 0]])
+D = np.array([[0, 0], [0, 0]])
 
 #
 # Construct inputs and outputs corresponding to steps in xy position
@@ -74,8 +74,8 @@ D = np.matrix([[0, 0], [0, 0]])
 # so that xd corresponds to the desired steady state.
 #
 
-xd = np.matrix([[1], [0], [0], [0], [0], [0]])
-yd = np.matrix([[0], [1], [0], [0], [0], [0]])
+xd = np.array([[1], [0], [0], [0], [0], [0]])
+yd = np.array([[0], [1], [0], [0], [0], [0]])
 
 #
 # Extract the relevant dynamics for use with SISO library
@@ -114,7 +114,7 @@ plt.suptitle("LQR controllers for vectored thrust aircraft (pvtol-lqr)")
 Qx1 = np.diag([1, 1, 1, 1, 1, 1])
 Qu1a = np.diag([1, 1])
 K, X, E = lqr(A, B, Qx1, Qu1a)
-K1a = np.matrix(K)
+K1a = np.array(K)
 
 # Close the loop: xdot = Ax - B K (x-xd)
 # Note: python-control requires we do this 1 input at a time
@@ -195,7 +195,7 @@ plt.text(5.3, 0.4, 'rho')
 Qx2 = C.T*C
 Qu2 = 0.1*np.diag([1, 1])
 K, X, E = lqr(A, B, Qx2, Qu2)
-K2 = np.matrix(K)
+K2 = np.array(K)
 
 H2x = ss(Ax - Bx*K2[0, lat], Bx*K2[0, lat]*xd[lat, :], Cx, Dx)
 H2y = ss(Ay - By*K2[1, alt], By*K2[1, alt]*yd[alt, :], Cy, Dy)
@@ -221,7 +221,7 @@ plt.legend(('x', 'y'), loc='lower right')
 Qx3 = np.diag([100, 10, 2*np.pi/5, 0, 0, 0])
 Qu3 = 0.1*np.diag([1, 10])
 (K, X, E) = lqr(A, B, Qx3, Qu3)
-K3 = np.matrix(K)
+K3 = np.array(K)
 
 H3x = ss(Ax - Bx*K3[0, lat], Bx*K3[0, lat]*xd[lat, :], Cx, Dx)
 H3y = ss(Ay - By*K3[1, alt], By*K3[1, alt]*yd[alt, :], Cy, Dy)

@@ -38,7 +38,7 @@ class TestStatefbk(unittest.TestCase):
         Wc = ctrb(A, B)
         np.testing.assert_array_almost_equal(Wc, Wctrue)
         self.assertTrue(isinstance(Wc, np.ndarray))
-        self.assertFalse(isinstance(Wc, np.matrix))
+        self.assertFalse(isinstance(Wc, np.array))
 
     # This test only works in Python 3 due to a conflict with the same
     # warning type in other test modules (frd_test.py).  See
@@ -56,7 +56,7 @@ class TestStatefbk(unittest.TestCase):
             self.assertTrue(issubclass(w[-1].category, UserWarning))
             
             Wc = ctrb(A, B)
-            self.assertTrue(isinstance(Wc, np.matrix))
+            self.assertTrue(isinstance(Wc, np.array))
             self.assertTrue(issubclass(w[-1].category,
                                        PendingDeprecationWarning))
             use_numpy_matrix(False)
@@ -96,7 +96,7 @@ class TestStatefbk(unittest.TestCase):
             self.assertEqual(len(w), 0)
             
             Wo = obsv(A, C)
-            self.assertTrue(isinstance(Wo, np.matrix))
+            self.assertTrue(isinstance(Wo, np.array))
             use_numpy_matrix(False)
 
     def testObsvMIMO(self):
